@@ -1,0 +1,34 @@
+# ============================================================
+# uploads/documents/.htaccess
+# Security rules for the document upload folder
+# ============================================================
+#
+# PROBLEM this solves:
+#   If someone uploads a .php file disguised as a .pdf,
+#   without this file they could visit:
+#     yoursite.com/uploads/documents/evil.php
+#   and execute malicious PHP code on your server.
+#
+# SOLUTION:
+#   This file tells Apache to NEVER execute any script
+#   inside this folder — only serve static files.
+# ============================================================
+
+# Block execution of PHP files (any variant)
+<FilesMatch "\.(php|php3|php4|php5|php7|phtml|phar)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Also remove PHP handler just in case
+RemoveHandler .php .php3 .php4 .php5 .php7 .phtml .phar
+RemoveType    .php .php3 .php4 .php5 .php7 .phtml .phar
+
+# Prevent directory listing (don't show file list if someone visits the folder URL)
+Options -Indexes
+
+# Allow normal file serving (images, PDFs)
+<FilesMatch "\.(pdf|jpg|jpeg|png|gif)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
