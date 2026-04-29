@@ -1,0 +1,25 @@
+# Uploads
+uploads/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+/.idea/
+
+# Node
+node_modules/
+
+# Composer
+vendor/
+
+# PHPStorm
+*.iml
+
+# Logs
+logs/
+
+# Mac
+*.DS_Store

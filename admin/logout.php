@@ -22,13 +22,16 @@ if (isset($_SESSION['user_id'])) {
         if (isset($conn) && $conn instanceof mysqli && !$conn->connect_error) {
             $user_id = (int)$_SESSION['user_id'];
             $ip      = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+            $action  = 'LOGOUT';
+            $table   = 'users';
+            $desc    = 'Admin logged out';
             $stmt    = $conn->prepare("
                 INSERT INTO activity_logs
                   (user_id, action, table_name, record_id, description, ip_address)
-                VALUES (?, 'LOGOUT', 'users', ?, 'Admin logged out', ?)
+                VALUES (?, ?, ?, ?, ?, ?)
             ");
             if ($stmt) {
-                $stmt->bind_param("iis", $user_id, $user_id, $ip);
+                $stmt->bind_param("isssss", $user_id, $action, $table, $user_id, $desc, $ip);
                 $stmt->execute();
                 $stmt->close();
             }

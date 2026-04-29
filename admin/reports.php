@@ -23,6 +23,36 @@ if ($date_from > $date_to) [$date_from, $date_to] = [$date_to, $date_from];
 $where_date = "DATE(a.applied_at) BETWEEN '$date_from' AND '$date_to'";
 $schol_cond = $schol_filter ? "AND a.scholarship_id=$schol_filter" : '';
 
+// CSV export handler
+if (isset($_GET['export']) && $_GET['export'] === 'csv') {
+  $export_q = $conn->query("\n      SELECT a.application_id, a.status, a.applied_at,\n             u.full_name, u.email,\n             s.title, s.amount, s.level,\n             p.payment_status, p.amount AS paid_amount\n      FROM applications a\n      JOIN users u ON u.user_id=a.user_id\n      JOIN scholarships s ON s.scholarship_id=a.scholarship_id\n      LEFT JOIN payments p ON p.application_id=a.application_id\n      WHERE $where_date $schol_cond\n      ORDER BY a.applied_at DESC\n    ");
+
+  header('Content-Type: text/csv; charset=utf-8');
+  $fn = 'reports_' . date('Ymd') . '.csv';
+  header('Content-Disposition: attachment; filename="' . $fn . '"');
+
+  $out = fopen('php://output', 'w');
+  fputcsv($out, ['Application ID','Student Name','Student Email','Scholarship','Scholarship Level','Scholarship Amount','Applied At','Status','Payment Status','Paid Amount']);
+  if ($export_q && $export_q->num_rows > 0) {
+    while ($r = $export_q->fetch_assoc()) {
+      fputcsv($out, [
+        $r['application_id'],
+        $r['full_name'],
+        $r['email'],
+        $r['title'],
+        $r['level'],
+        $r['amount'] ? number_format($r['amount'],0,'',',') : '',
+        $r['applied_at'],
+        $r['status'],
+        $r['payment_status'] ?? '',
+        $r['paid_amount'] ? number_format($r['paid_amount'],0,'',',') : '',
+      ]);
+    }
+  }
+  fclose($out);
+  exit();
+}
+
 // ── Summary for date range ──
 $apps_in_range   = $conn->query("SELECT COUNT(*) c FROM applications a WHERE $where_date $schol_cond")->fetch_assoc()['c'] ?? 0;
 $approved_range  = $conn->query("SELECT COUNT(*) c FROM applications a WHERE $where_date $schol_cond AND a.status='approved'")->fetch_assoc()['c'] ?? 0;
@@ -100,7 +130,12 @@ include 'includes/layout.php';
             <?php endwhile; endif; ?>
           </select>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 d-grid">
+          
+          <button type="submit" name="export" value="csv" class="btn-a btn-outline" style="width:100%;margin-top:.5rem;justify-content:center">
+            <i class="fas fa-download"></i> Download CSV
+          </button>
+          <br>
           <button type="submit" class="btn-a btn-primary" style="width:100%;justify-content:center">
             <i class="fas fa-chart-bar"></i> Generate
           </button>

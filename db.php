@@ -1,27 +1,25 @@
 <?php
-/**
- * db.php
- *
- * Database connection bootstrap for the Scholarship Management System.
- * This file creates a mysqli connection assigned to `$conn`.
- *
- * WARNING: Current configuration uses hardcoded credentials.
- * For production, move credentials to an environment file (.env)
- * or server environment variables and load them securely.
- *
- * Usage: require_once 'db.php'; then use `$conn` for queries.
- */
+
+// ============================================================
+// db.php — Database Connection File
+// Scholarship Management System
+// ============================================================
+// This file creates a connection to the MySQL database using
+// mysqli. Include this file at the top of any PHP page that
+// needs database access:  require_once 'db.php';
+// ============================================================
 
 // ------------------------------------
 // 1. DATABASE CONFIGURATION
 // ------------------------------------
-// Change these values to match your server setup.
+// Simple configuration for InfinityFree and other shared hosting
+// Update these values with your database credentials
 
-define('DB_HOST', 'localhost');       // Database server (usually localhost)
-define('DB_USER', 'root');            // Your MySQL username
-define('DB_PASS', '');                // Your MySQL password (empty for XAMPP default)
-define('DB_NAME', 'scholarship_system'); // Database name
-define('DB_CHARSET', 'utf8mb4');      // Character set (supports emojis & all Unicode)
+define('DB_HOST', 'localhost');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+define('DB_NAME', 'scholarship_system');
+define('DB_CHARSET', 'utf8mb4');
 
 // ------------------------------------
 // 2. CREATE THE CONNECTION

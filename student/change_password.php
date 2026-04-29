@@ -43,9 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($stmt->execute()) {
             // Log activity
-            $ip  = $_SERVER['REMOTE_ADDR'] ?? '';
+            $ip     = $_SERVER['REMOTE_ADDR'] ?? '';
+            $action = 'PASSWORD_CHANGE';
+            $table  = 'users';
+            $desc   = 'Password changed by student';
             $log = $conn->prepare("INSERT INTO activity_logs (user_id,action,table_name,record_id,description,ip_address) VALUES (?,?,?,?,?,?)");
-            $log->bind_param("ississ", $user_id, 'PASSWORD_CHANGE', 'users', $user_id, 'Password changed by student', $ip);
+            $log->bind_param("isssss", $user_id, $action, $table, $user_id, $desc, $ip);
             $log->execute();
 
             // Create notification

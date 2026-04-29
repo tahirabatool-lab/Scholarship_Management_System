@@ -192,17 +192,126 @@ CREATE TABLE IF NOT EXISTS activity_logs (
 
 
 -- ============================================================
--- SAMPLE ADMIN ACCOUNT
--- Password hash below = password_hash('Admin@1234', PASSWORD_BCRYPT)
--- Change the password immediately after first login!
+-- SAMPLE DATA FOR TESTING
 -- ============================================================
+
+-- Sample Admin Account
+-- Password: Akram@123
 INSERT INTO users (full_name, email, phone, password, role, status)
 VALUES (
     'System Administrator',
     'admin@scholarship.com',
     '03000000000',
-    '$2y$10$W971JuKpf6AjYYDUAAc50OlOI.uBipCxUv7syCHekdcy7KCcRLFVC', -- "Akram@123"
+    '$2y$10$W971JuKpf6AjYYDUAAc50OlOI.uBipCxUv7syCHekdcy7KCcRLFVC',
     'admin',
+    'active'
+);
+
+-- Sample Student Users
+INSERT INTO users (full_name, email, phone, password, role, status)
+VALUES 
+(
+    'Ahmed Ali',
+    'ahmed@student.com',
+    '03001234567',
+    '$2y$10$N9qo8uLOickgx2ZMRZoMye4wfp9kUW0QvZpvMhKH9M.d0NjVqIe5K', -- "Student@123"
+    'student',
+    'active'
+),
+(
+    'Fatima Khan',
+    'fatima@student.com',
+    '03009876543',
+    '$2y$10$N9qo8uLOickgx2ZMRZoMye4wfp9kUW0QvZpvMhKH9M.d0NjVqIe5K', -- "Student@123"
+    'student',
+    'active'
+),
+(
+    'Hassan Raza',
+    'hassan@student.com',
+    '03115555555',
+    '$2y$10$N9qo8uLOickgx2ZMRZoMye4wfp9kUW0QvZpvMhKH9M.d0NjVqIe5K', -- "Student@123"
+    'student',
+    'active'
+),
+(
+    'Ayesha Malik',
+    'ayesha@student.com',
+    '03334444444',
+    '$2y$10$N9qo8uLOickgx2ZMRZoMye4wfp9kUW0QvZpvMhKH9M.d0NjVqIe5K', -- "Student@123"
+    'student',
+    'active'
+);
+
+-- Sample Scholarships
+INSERT INTO scholarships (title, provider, category, level, type, description, eligibility_criteria, min_gpa, max_age, gender_requirement, amount, total_seats, start_date, deadline, status)
+VALUES
+(
+    'HEC Merit Scholarship - Engineering',
+    'Higher Education Commission',
+    'STEM',
+    'Undergraduate',
+    'Merit',
+    'Scholarship for outstanding students pursuing engineering programs at recognized universities across Pakistan.',
+    'Must have minimum 3.5 CGPA, passed all courses, no backlogs',
+    3.50,
+    30,
+    'Any',
+    150000.00,
+    5,
+    '2026-05-01',
+    '2026-08-31',
+    'active'
+),
+(
+    'Punjab Govt Need-Based Scholarship',
+    'Punjab Government',
+    'Arts',
+    'Undergraduate',
+    'Need-Based',
+    'Financial assistance for deserving students from low-income families.',
+    'Annual family income should be less than 500,000 PKR',
+    2.50,
+    25,
+    'Any',
+    100000.00,
+    10,
+    '2026-04-15',
+    '2026-07-15',
+    'active'
+),
+(
+    'IQRA Fund Postgraduate Scholarship',
+    'IQRA Fund',
+    'STEM',
+    'Postgraduate',
+    'Merit',
+    'Excellence in STEM studies - Master''s and PhD programs.',
+    'Must have 3.7+ CGPA in Bachelor degree, research background',
+    3.70,
+    35,
+    'Any',
+    300000.00,
+    3,
+    '2026-06-01',
+    '2026-09-30',
+    'active'
+),
+(
+    'Women Empowerment Scholarship',
+    'National Commission for Human Development',
+    'Arts',
+    'Intermediate',
+    'Merit',
+    'Supporting talented female students at intermediate level.',
+    'Female student with minimum 80% in Matric',
+    3.00,
+    22,
+    'Female',
+    75000.00,
+    8,
+    '2026-05-15',
+    '2026-08-15',
     'active'
 );
 

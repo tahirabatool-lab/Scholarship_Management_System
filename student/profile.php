@@ -47,9 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['email']     = $email;
 
                 // Log
-                $ip  = $_SERVER['REMOTE_ADDR'] ?? '';
+                $ip     = $_SERVER['REMOTE_ADDR'] ?? '';
+                $action = 'PROFILE_UPDATE';
+                $table  = 'users';
+                $desc   = 'Student updated profile';
                 $log = $conn->prepare("INSERT INTO activity_logs (user_id,action,table_name,record_id,description,ip_address) VALUES (?,?,?,?,?,?)");
-                $log->bind_param("ississ", $user_id, 'PROFILE_UPDATE', 'users', $user_id, 'Student updated profile', $ip);
+                $log->bind_param("isssss", $user_id, $action, $table, $user_id, $desc, $ip);
                 $log->execute();
 
                 $success = "Profile updated successfully!";

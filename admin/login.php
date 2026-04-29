@@ -106,14 +106,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$already_student) {
                 $upd->execute();
 
                 // Log the admin login to activity_logs
-                $ip  = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-                $uid = $user['user_id'];
+                $ip     = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+                $uid    = $user['user_id'];
+                $action = 'ADMIN_LOGIN';
+                $table  = 'users';
+                $desc   = 'Admin logged in';
                 $log = $conn->prepare("
                     INSERT INTO activity_logs
                       (user_id, action, table_name, record_id, description, ip_address)
-                    VALUES (?, 'ADMIN_LOGIN', 'users', ?, 'Admin logged in', ?)
+                    VALUES (?, ?, ?, ?, ?, ?)
                 ");
-                $log->bind_param("iis", $uid, $uid, $ip);
+                $log->bind_param("isssss", $uid, $action, $table, $uid, $desc, $ip);
                 $log->execute();
 
                 // Redirect to admin dashboard
